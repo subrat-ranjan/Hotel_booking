@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { SearchContext } from "../../contex/SearchContext";
+import { AuthContext } from "../../contex/AuthContext";
 
 const Header = ({ type }) => {
   const [openDate, setOpenDate] = useState(false);
@@ -20,10 +21,6 @@ const Header = ({ type }) => {
     },
   ]);
 
-  // startDate: new Date(),
-  //     endDate: new Date(),
-  //     key: "selection",
-
   const [destination, setDestination] = useState("");
   const [openOptions, setOpenOptions] = useState(false);
   const [options, setOptions] = useState({
@@ -33,6 +30,8 @@ const Header = ({ type }) => {
   });
 
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
   const handleOption = (name, operation) => {
     setOptions((prev) => {
       return { ...prev, [name]: operation === "i" ? options[name] + 1 : options[name] - 1 };
@@ -79,7 +78,7 @@ const Header = ({ type }) => {
           <>
             <h1 className="headerTitle">A Lifetime of discounts ? It's Genius.</h1>
             <p className="headerDesc"> Get rewarded for your travel - unlock instant of 10% or more with a free Hotel booking account</p>
-            <button className="headerBtn"> Sign in/ Register</button>
+            {!user && <button className="headerBtn"> Sign in/ Register</button>}
             <div className="headerSearch">
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />
